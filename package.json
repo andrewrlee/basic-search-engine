@@ -1,0 +1,14 @@
+{
+  "name": "basic-search-engine",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "stem:porter:verify": "node stemming/porter/verify/run.mjs ",
+    "stem:porter:run": "node stemming/porter/run.mjs "
+  },
+  "author": "andrewrlee",
+  "license": "MIT",
+  "description": ""
+}
