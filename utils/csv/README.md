@@ -25,11 +25,12 @@ It has a single function, `transformCsvStream`, that takes a text stream and pro
 This can then be consumed as desired.
 
 The main CSV parsing logic is implemented in the `CsvTransformer`.
+
 Notes:
 
-- It set's `objectMode` to true inorder to transform to objects rather than text
+- Sets `objectMode` to true in order to transform textual stream chunks to objects rather than text.
 - It uses `this.push` in order to push each row array as it's created rather than waiting to process the entire chunk before emitting.
-- It needed to call the passed in `callback` to signal that the chunk is fully processed - this was a cause of a bug where only small numbers of rows were being emitted. (If it was possible for the code to throw an exception - the error would have to be passed to the callback to pass the error through to consumers of the stream correctly).
+- Needed to call the passed in `callback` to signal that the chunk is fully processed - this was the cause of a bug where only small numbers of rows were being emitted. (If it was possible for the code to throw an exception - the error would have to be passed to the callback to pass the error through to consumers of the stream correctly).
 
 ## Usage:
 
@@ -55,6 +56,28 @@ This produces the following output:
 ...
 [ 'a', 'b', 'c', 'd, g', '"eee"' ]
 [ 'a1', 'b2', 'c3' ]
+```
+
+An example of reading from a file can be seen below:
+```ts
+  import fs from "fs"; 
+  import { Readable } from "stream";
+  import { transformCsvStream } from "./csvParser.mjs";
+
+  const file = "./data/short_stories/raw/db_books.csv";
+
+  const readStream = fs.createReadStream(file, {
+    encoding: "utf8",
+    highWaterMark: 64000,
+  });
+
+  const stream = transformCsvStream(readStream);
+
+  const results = [];
+  for await (const chunk of stream) {
+    results.push(chunk);
+  }
+  console.log(results.length);
 ```
 
 #### Future work
