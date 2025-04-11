@@ -58,4 +58,4 @@ This produces the following output:
 ```
 
 #### Future work
-I have a set of tests I had for a previous implementation that I need to hook up and ensure work with this implementation! 
+This is sufficient to parse the data dumps I've retrieved - there is likely many more edgecases and functionality in the CSV spec that isn't covered by this parser.

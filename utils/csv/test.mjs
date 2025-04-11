@@ -3,14 +3,14 @@ import { Readable } from "stream";
 
 import { transformCsvStream } from "./csvParser.mjs";
 
-const file = "./data/short_stories/raw/db_books.csv";
-
-const readStream = fs.createReadStream(file, {
-  encoding: "utf8",
-  highWaterMark: 64000,
-});
-
 {
+  const file = "./data/short_stories/raw/db_books.csv";
+
+  const readStream = fs.createReadStream(file, {
+    encoding: "utf8",
+    highWaterMark: 64000,
+  });
+
   const stream = transformCsvStream(readStream);
 
   const results = [];
