@@ -1,17 +1,6 @@
 # A CSV parser
 
-The data I decided to test the search engine with was a set of around [1000 short stories](https://www.kaggle.com/code/kerneler/starter-1002-short-stories-from-4d1c5610-0/input) I found on Kaggler.
-
-This consisted data dump consisted of two csv files:
-
-- An index CSV file containing metadata about the stories:
-  - Book number
-  - Title
-  - Author
-  - Language
-- Another CSV file of around 238Mb, ~9 millions lines, containing two fields:
-  - Book number
-  - The Story text
+To test the search engine I needed lots of text. I found [some good test data](/data/short_stories/README.md) from Kaggle which was in CSV files.
 
 Given the idea I'm not relying on any 3rd party dependencies, I realised I'd have to create my own CSV parser to process the data.
 
@@ -59,26 +48,28 @@ This produces the following output:
 ```
 
 An example of reading from a file can be seen below:
+
 ```ts
-  import fs from "fs"; 
-  import { Readable } from "stream";
-  import { transformCsvStream } from "./csvParser.mjs";
+import fs from "fs";
+import { Readable } from "stream";
+import { transformCsvStream } from "./csvParser.mjs";
 
-  const file = "./data/short_stories/raw/db_books.csv";
+const file = "./data/short_stories/raw/db_books.csv";
 
-  const readStream = fs.createReadStream(file, {
-    encoding: "utf8",
-    highWaterMark: 64000,
-  });
+const readStream = fs.createReadStream(file, {
+  encoding: "utf8",
+  highWaterMark: 64000,
+});
 
-  const stream = transformCsvStream(readStream);
+const stream = transformCsvStream(readStream);
 
-  const results = [];
-  for await (const chunk of stream) {
-    results.push(chunk);
-  }
-  console.log(results.length);
+const results = [];
+for await (const chunk of stream) {
+  results.push(chunk);
+}
+console.log(results.length);
 ```
 
 #### Future work
+
 This is sufficient to parse the data dumps I've retrieved - there is likely many more edgecases and functionality in the CSV spec that isn't covered by this parser.
