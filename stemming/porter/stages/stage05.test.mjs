@@ -2,7 +2,7 @@ import { test, suite } from "node:test";
 import assert from "node:assert";
 import { stage5a, stage5b } from "./stage05.mjs";
 
-suite("Stage 5", () => {
+suite("Porter / Stage 5", () => {
   test("Check stage 5a", () => {
     check(stage5a, "probate", "probat");
     check(stage5a, "rate", "rate");

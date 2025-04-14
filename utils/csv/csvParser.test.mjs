@@ -4,15 +4,18 @@ import assert from "node:assert";
 import { transformCsvStream } from "./csvParser.mjs";
 
 const toColumns = async (text) => {
-  const readStream = Readable.from(`${text}\n`);
+  const readStream = Readable.from(`${text}\n`, {
+    highWaterMark: 1,
+    encoding: "utf-8",
+  });
   const stream = transformCsvStream(readStream);
   const chunks = await stream.toArray();
   return chunks[0];
 };
 
-suite("csv parsing", () => {
-  test("empty", async () => {
-    assert.deepEqual(await toColumns(""), ['']);
+suite("Csv parsing", () => {
+  test("empty value", async () => {
+    assert.deepEqual(await toColumns(""), [""]);
   });
   test("single value", async () => {
     assert.deepEqual(await toColumns("hello"), ["hello"]);
@@ -24,19 +27,19 @@ suite("csv parsing", () => {
     assert.deepEqual(await toColumns("hello, world "), ["hello", "world"]);
   });
   test("empty value", async () => {
-    assert.deepStrictEqual(await toColumns(",world"), ['', "world"]);
+    assert.deepStrictEqual(await toColumns(",world"), ["", "world"]);
   });
   test("mixed empty values", async () => {
     assert.deepStrictEqual(await toColumns(",world,,wah,jim"), [
-      '',
+      "",
       "world",
-      '',
+      "",
       "wah",
       "jim",
     ]);
   });
   test("end with comma", async () => {
-    assert.deepStrictEqual(await toColumns("jim,"), ["jim", '']);
+    assert.deepStrictEqual(await toColumns("jim,"), ["jim", ""]);
   });
 
   test("Double quoted", async () => {
@@ -56,7 +59,7 @@ suite("csv parsing", () => {
   });
   test("contain's nested quotes", async () => {
     assert.deepStrictEqual(await toColumns(`"some "BIG" cheese"`), [
-      'some BIG cheese',
+      "some BIG cheese",
     ]);
   });
   test("comma ignored within quotes", async () => {

@@ -3,7 +3,7 @@ import { test, suite } from "node:test";
 import assert from "node:assert";
 import { stage2 } from "./stage02.mjs";
 
-suite("Stage 2", () => {
+suite("Porter / Stage 2", () => {
   test("Check stage 2", () => {
     testStage2("relational", "relate");
     testStage2("conditional", "condition");
