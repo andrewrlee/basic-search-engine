@@ -9,3 +9,5 @@ Progress so far:
 - A CSV parser is [here](./utils/csv/README.md) ✅ (required for processing test data)
 
 - A preprocessor [here](./data/short_stories/README.md) to prepare some test data for indexing ✅ 
+
+- A tokeniser [here](./indexer//tokeniser/README.md) to split text into words ✅
